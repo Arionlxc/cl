@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Clan Info</title>
+</head>
+<body>
+    <h1>Edit Clan Information</h1>
+    <label for="newName">New Name:</label>
+    <input type="text" id="newName"><br>
+    <label for="newHeadpic">New Headpic URL:</label>
+    <input type="text" id="newHeadpic"><br>
+    <label for="newDetails">New Details:</label>
+    <input type="text" id="newDetails"><br>
+    <label for="newTags">New Tags (Comma-separated):</label>
+    <input type="text" id="newTags"><br>
+    <button id="saveButton">Save</button>
+
+    <h2>JSON Response:</h2>
+    <pre id="response"></pre>
+
+    <script>
+        // Replace with your actual API URL and headers
+        const apiUrl = 'http://modsgs.sandboxol.com/clan/api/v1/clan/tribe';
+        const headers = {
+            'Access-Token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyNjQ1NDQ0MTEwIiwiaWF0IjoxNjkzNzU5NTQzLCJzdWIiOiIyMDIzMDkwMyAxNjQ1NDM1NzIiLCJpc3MiOiJTYW5kYm94LVNlY3VyaXR5LUJhc2ljIiwiZXhwIjoxNjk2MzUxNTQzfQ.bf5ZfXm3YAyZ8zt7lAfY0K4yreRq2Jxd_49_9wwrREw',
+            'userId': '2645444110',
+            'Content-Type': 'application/json',
+        };
+
+        // Function to update clan data
+        function updateClanData() {
+            const newName = document.getElementById('newName').value;
+            const newHeadpic = document.getElementById('newHeadpic').value;
+            const newDetails = document.getElementById('newDetails').value;
+            const newTags = document.getElementById('newTags').value.split(',');
+
+            // Create a request to the API
+            fetch(apiUrl, {
+                method: 'PUT', // or 'PUT' if required
+                headers: headers,
+                body: JSON.stringify({
+                    clanId: 29979,
+                    currency: 0,
+                    details: newDetails,
+                    headPic: newHeadpic,
+                    name: newName,
+                    tags: newTags,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the API response and update the JSON response section
+                    const responseSection = document.getElementById('response');
+                    responseSection.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Add an event listener to the "Save" button
+        document.getElementById('saveButton').addEventListener('click', updateClanData);
+    </script>
+</body>
+</html>
